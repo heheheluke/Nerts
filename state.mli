@@ -1,4 +1,4 @@
-open Deck
+open Player
 
 (*Implements the state of the Nerts game, as well the functions
 to compute the score of a player and check whether or not a player
@@ -7,26 +7,6 @@ has any moves available.*)
 
 (*TYPE DEFINITIONS*)
 
-(*Represents the workspace of a player, the four solitaireDecks
-that a player is allowed to manipulate.*)
-type workspace = (solitaireDeck list)
-
-(*Represents a player's nerts pile, the cards the player is required
-to get rid of before being able to declare "Nerts."*)
-type nerts = deck
-
-(*Represents a player's waste pile, the pile of cards that has already
-been flipped over from the stock pile.*)
-type wastePile = deck
-
-(*Represents a player's stack pile, the cards the player has available
-to flip over into the waste pile.*)
-type stockPile = deck
-
-(*Represents the game's common area of ordered decks, where all players 
-contribute cards until the game ends.*)
-type commonArea = orderedDeck list
-
 (*List of players in the current game*)
 type players = player list
 
@@ -34,6 +14,9 @@ type players = player list
 in the game as well as the state of the common area.*)
 type state = players * commonArea
 
+(*Represents the game's common area of ordered decks, where all players 
+contribute cards until the game ends.*)
+type commonArea = orderedDeck list
 
 (*FUNCTION DEFINITIONS*)
 

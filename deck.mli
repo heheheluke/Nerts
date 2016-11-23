@@ -4,9 +4,6 @@ a deck, including shuffling, adding, and removing cards.*)
 
 (*TYPE DEFINITIONS*)
 
-(*The string that represents a player's name*)
-type playerName = string (*ASK ABOUT THIS*)
-
 (*Variant type that represents the rank of a card (e.g. King, 4, etc.)*)
 type rank = Number of int | Jack | Queen | King | Ace
 
@@ -15,7 +12,8 @@ type suit = Clubs | Hearts | Diamonds | Spades
 
 (*Represent a card's rank, suit, and owner (as there will be
 a deck for each player)*)
-type card = rank * suit * playerName
+type card = {rank : rank;
+			suit : suit}
 
 (*Represent a deck of cards with no restrictions as to how the
 cards are ordered.*)

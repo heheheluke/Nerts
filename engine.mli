@@ -8,7 +8,7 @@ as well as determining whether or not a move is legal/illegal.*)
 
 (*Type synonym that represents the initial game state, such as
 number of players and difficulty of the players.*)
-type config = string list
+type config = string
 
 (*FUNCTION DEFINITIONS*)
 
@@ -20,6 +20,10 @@ val isLegalMove : state -> move -> bool
 the player performing the move, returns a new state with the move 
 performed.*)
 val performMove : state -> move -> player -> state
+
+(*Reads in a string that is interpreted as a configuration, implementing
+the number of players and their difficulties.*)
+val takeConfig : unit -> string
 
 (*Initializes the game state. Given a configuration (that represents,
 for example, the number of players and their difficulties), returns
