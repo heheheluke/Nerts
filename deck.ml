@@ -1,3 +1,4 @@
+
 (*Variant type that represents the rank of a card (e.g. King, 4, etc.)*)
 type rank = Number of int | Jack | Queen | King | Ace
 
@@ -26,6 +27,64 @@ Hearts and Diamonds form the "red" color, while Spades and Clubs form
 the "black" color.*)
 type solitaireDeck = deck
 
+let deck = 
+[{rank= Number 2;suit=Clubs};
+{rank= Number 3;suit=Clubs};
+{rank= Number 4;suit=Clubs};
+{rank= Number 5;suit=Clubs};
+{rank= Number 6;suit=Clubs};
+{rank= Number 7;suit=Clubs};
+{rank= Number 8;suit=Clubs};
+{rank= Number 9;suit=Clubs};
+{rank= Number 10;suit=Clubs};
+{rank= Jack;suit=Clubs};
+{rank= Queen;suit=Clubs};
+{rank= King;suit=Clubs};
+{rank= Ace;suit=Clubs};
+{rank= Number 2;suit=Hearts};
+{rank= Number 3;suit=Hearts};
+{rank= Number 4;suit=Hearts};
+{rank= Number 5;suit=Hearts};
+{rank= Number 6;suit=Hearts};
+{rank= Number 7;suit=Hearts};
+{rank= Number 8;suit=Hearts};
+{rank= Number 9;suit=Hearts};
+{rank= Number 10;suit=Hearts};
+{rank= Jack;suit=Hearts};
+{rank= Queen;suit=Hearts};
+{rank= King;suit=Hearts};
+{rank= Ace;suit=Hearts};
+{rank= Number 2;suit=Diamonds};
+{rank= Number 3;suit=Diamonds};
+{rank= Number 4;suit=Diamonds};
+{rank= Number 5;suit=Diamonds};
+{rank= Number 6;suit=Diamonds};
+{rank= Number 7;suit=Diamonds};
+{rank= Number 8;suit=Diamonds};
+{rank= Number 9;suit=Diamonds};
+{rank= Number 10;suit=Diamonds};
+{rank= Jack;suit=Diamonds};
+{rank= Queen;suit=Diamonds};
+{rank= King;suit=Diamonds};
+{rank= Ace;suit=Diamonds};
+{rank= Number 2;suit=Spades};
+{rank= Number 3;suit=Spades};
+{rank= Number 4;suit=Spades};
+{rank= Number 5;suit=Spades};
+{rank= Number 6;suit=Spades};
+{rank= Number 7;suit=Spades};
+{rank= Number 8;suit=Spades};
+{rank= Number 9;suit=Spades};
+{rank= Number 10;suit=Spades};
+{rank= Jack;suit=Spades};
+{rank= Queen;suit=Spades};
+{rank= King;suit=Spades};
+{rank= Ace;suit=Spades}]
+
+
+(* Taken from internet need to creat own. *)
+let shuffle d =
+    List.map (fun c -> (Random.bits (), c)) d 
 
 (*FUNCTION DEFINITIONS*)
 (* MEthods that have come up after  doing shit 
@@ -82,25 +141,64 @@ let can_add_card_common deck card =
 	false
 
 (*
-(*Given a deck, returns true if the deck is ordered like a solitaire
-deck, and false otherwise.*)
-val isSolitaire : deck -> bool
+Tranpoting multpile decks 
+*)
+let can_add_deck deck_from deck_to = 
+	let lower = List.nth deck_from  ((size deck_from)-1) in 
+	can_add_card deck_to lower
 
-(*Given a deck, returns true if the deck is an ordered deck, and false
-otherwise*)
-val isOrdered : deck -> bool
+let rec split_list list2 num = 
+	match list2 with
+	| h::t -> if num == 1 then [h] else h::(split_list t (num-1))
+	| [] -> []
 
-(*Given a deck, shuffles the cards of the deck randomly and gives the
-newly shuffled deck containing the same cards.*)
-val shuffle : deck -> deck
+let rec split_list2 list num = 
+	match list with
+	| [] -> []
+	| h::t -> if num > 0 then split_list2 (List.tl list) (num-1) else list
+	
 
-(*Given a deck and a card to add, adds the card to the top of the deck*)
-val addCard : deck -> card -> deck
+let rec make_work (work_pile : deck list) = 
+	match work_pile with
+	| h::t -> [h]::(make_work t)
+	| [] -> []
 
-(*Given a deck and a card to remove, removes the card from the top of the
-deck. If the card is not on the top of the deck, this function will raise
-Failure.*)
-val removeCard : deck -> card -> deck
+let addCard_work deck card = 
+	if can_add_card deck card then 
+	[card]@deck
+	else
+	deck
+
+let removeCard (deck : deck) card = 
+	if size deck = 0 then 
+	deck
+	else
+	let card_compare = List.hd deck in 
+	if card_compare != card then deck
+ 	else 
+ 	List.tl deck
+
+let combine (deck_from : deck)  deck_to = 
+	if size deck_from = 0 then deck_to else
+	if size deck_to = 0 then deck_from else
+	let bottom = List.nth deck_from ((size deck_from)-1) in 
+	if can_add_card deck_to bottom then deck_from@deck_to else
+	deck_to
+
+(*
+let init name = 
+	let s = shuffle deck in 
+	let nerts_pile = split_list s 13 in 
+	let other = split_list2 s 13 in 
+	let work_pile = split_list other 4 in 
+	let useing = split_list other 4 in 
+	let workspace = make_work work_pile in 
+	{name=name;workspace=workspace; 
+			nerts=nerts_pile; 
+			wastePile=[]; 
+			stockPile=useing}
+
+
 
 (*Given two decks a and b, combines the decks so that a goes on top of b,
 and gives the newly formed deck. 
