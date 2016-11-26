@@ -1,4 +1,4 @@
-open deck
+open Deck
 
 (*Implements a single player in the game Nerts, as well as the
 actions a player can perform*)
@@ -39,3 +39,16 @@ type player = {name : string;
 			nerts : nerts; 
 			wastePile : wastePile; 
 			stockPile : stockPile}
+			(*
+let init name = 
+	let s = shuffle deck in 
+	let nerts_pile = split_list s 13 in 
+	let other = split_list2 s 13 in 
+	let work_pile = split_list other 4 in 
+	let useing = split_list other 4 in 
+	let workspace = make_work work_pile in 
+	{name=name;workspace=workspace; 
+			nerts=nerts_pile; 
+			wastePile=[]; 
+			stockPile=useing}
+*)

@@ -84,7 +84,9 @@ let deck =
 
 (* Taken from internet need to creat own. *)
 let shuffle d =
-    List.map (fun c -> (Random.bits (), c)) d 
+    let a = List.map (fun c -> (Random.bits (), c)) d in 
+    let temp = List.sort compare a in 
+    List.map (fun (a,b) -> b) temp
 
 (*FUNCTION DEFINITIONS*)
 (* MEthods that have come up after  doing shit 
@@ -94,7 +96,7 @@ Add work pile method
 *)
 (*Returns the number of cards in a deck*)
 let size deck = 
-	List.length deck
+	(List.length deck) 
 
 
 (*Returns true if the deck contains no cards, and false otherwise.*)
@@ -123,7 +125,7 @@ let can_add_card deck card =
 	else 
 	let dcard = List.hd deck in 
 	if (is_red card.suit) != (is_red dcard.suit) &&  
-	((rank_convert dcard.rank)) = ((rank_convert card.rank)-1)
+	((rank_convert dcard.rank)) = ((rank_convert card.rank)+1)
 	then true
 	else 
 	false
@@ -135,7 +137,7 @@ let can_add_card_common deck card =
 	true
 	else 
 	let dcard = List.hd deck in 
-	if ((rank_convert dcard.rank) = ((rank_convert card.rank)+1)) &&
+	if ((rank_convert dcard.rank) = ((rank_convert card.rank)-1)) &&
 	dcard.suit = card.suit then true
 	else
 	false
@@ -185,21 +187,18 @@ let combine (deck_from : deck)  deck_to =
 	if can_add_card deck_to bottom then deck_from@deck_to else
 	deck_to
 
-(*
-let init name = 
-	let s = shuffle deck in 
-	let nerts_pile = split_list s 13 in 
-	let other = split_list2 s 13 in 
-	let work_pile = split_list other 4 in 
-	let useing = split_list other 4 in 
-	let workspace = make_work work_pile in 
-	{name=name;workspace=workspace; 
-			nerts=nerts_pile; 
-			wastePile=[]; 
-			stockPile=useing}
+let rec separate_helper (deck : deck) card = 
+	match deck with
+	| h::t -> if h = card then [h] else
+				h::(separate_helper t card) 
+	| [] -> []
+
+let separate deck card = 
+	if List.mem card deck = false then deck else
+	separate_helper deck card
 
 
-
+(*)
 (*Given two decks a and b, combines the decks so that a goes on top of b,
 and gives the newly formed deck. 
 For example, if a was the deck: King of Hearts, Queen of Hearts, Jack of Hearts,
