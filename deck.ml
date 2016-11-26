@@ -1,4 +1,4 @@
-
+module Deck = struct
 (*Variant type that represents the rank of a card (e.g. King, 4, etc.)*)
 type rank = Number of int | Jack | Queen | King | Ace
 
@@ -137,7 +137,7 @@ let can_add_card_common deck card =
 	true
 	else 
 	let dcard = List.hd deck in 
-	if ((rank_convert dcard.rank) = ((rank_convert card.rank)-1)) &&
+	if ((rank_convert dcard.rank) = ((rank_convert card.rank)-11)) &&
 	dcard.suit = card.suit then true
 	else
 	false
@@ -160,7 +160,7 @@ let rec split_list2 list num =
 	| h::t -> if num > 0 then split_list2 (List.tl list) (num-1) else list
 	
 
-let rec make_work (work_pile : deck list) = 
+let rec make_work (work_pile : deck) = 
 	match work_pile with
 	| h::t -> [h]::(make_work t)
 	| [] -> []
@@ -198,6 +198,8 @@ let separate deck card =
 	separate_helper deck card
 
 
+let remove_first deck =
+	if size deck > 0 then  List.tl deck else deck
 (*)
 (*Given two decks a and b, combines the decks so that a goes on top of b,
 and gives the newly formed deck. 
@@ -212,3 +214,4 @@ and above it, returning it as a deck. If the card is not in the deck, this
 function will raise Failure.*)
 val separate : deck -> card -> deck
 *)
+end

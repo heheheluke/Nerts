@@ -35,11 +35,11 @@ type stockPile = deck
 (*Represents a player in the nerts game. Store the player's name, workspace,
 nerts pile, stock pile, and waste pile.*)
 type player = {name : string; 
-			workspace : workspace; 
-			nerts : nerts; 
-			wastePile : wastePile; 
-			stockPile : stockPile}
-			(*
+			mutable workspace : workspace; 
+			mutable nerts : nerts; 
+			mutable wastePile : wastePile; 
+			mutable stockPile : stockPile}
+		
 let init name = 
 	let s = shuffle deck in 
 	let nerts_pile = split_list s 13 in 
@@ -51,4 +51,3 @@ let init name =
 			nerts=nerts_pile; 
 			wastePile=[]; 
 			stockPile=useing}
-*)
