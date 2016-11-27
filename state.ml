@@ -10,13 +10,24 @@ has any moves available.*)
 (*List of players in the current game*)
 type players = player list
 
-(*Represents the state of the game, including the players currently involved
-in the game as well as the state of the common area.*)
-type state = players * commonArea
-
 (*Represents the game's common area of ordered decks, where all players 
 contribute cards until the game ends.*)
 type commonArea = orderedDeck list
 
-(*FUNCTION DEFINITIONS*)
-let canDeclare player
+(*Represents the state of the game, including the players currently involved
+in the game as well as the state of the common area.*)
+type state = {players: players; mutable commonArea: orderedDeck list}
+
+let canDeclare player = 
+	if isEmpty player.nerts then true else false
+
+let perform_move player move = 
+	match move with
+	| Shift (card,deck1,deck2) -> if size deck1 != 0 then 
+								  shift_helper player card deck1 deck2
+							      else ()
+	| Flip -> flip player
+	| Declare -> ()
+
+
+

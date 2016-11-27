@@ -1,3 +1,4 @@
+module  Player = struct
 open Deck
 
 (*Implements a single player in the game Nerts, as well as the
@@ -37,6 +38,7 @@ type stockPile = deck
 (*Represents a player in the nerts game. Store the player's name, workspace,
 nerts pile, stock pile, and waste pile.*)
 type player = {name : string; 
+			mutable points : int;
 			mutable workspace1 : deck; 
 			mutable workspace2 : deck; 
 			mutable workspace3 : deck; 
@@ -56,6 +58,7 @@ let init name =
 	let workspace3 = List.nth work_pile 2 in 
 	let workspace4 = List.nth work_pile 3 in 
 	{name=name;
+	points=(-26);
 	workspace1=[workspace1]; 
 	workspace2=[workspace2]; 
 	workspace3=[workspace3]; 
@@ -141,6 +144,7 @@ let shift_helper player card deck1 deck2 =
 	else if deck1 = player.nerts then 
 					if List.hd deck1 = card && can_add_card deck2 card then 
 					    let () = player.nerts <- List.tl player.nerts in 
+					    let () = player.points <- (player.points + 2) in 
 					    add_card_heleper player card deck2
 					   (*
 					else if (List.nth deck1 ((size deck1)-1) = card && can_add_card deck2 card then 
@@ -150,11 +154,4 @@ let shift_helper player card deck1 deck2 =
 	else () 
 
 
-let perform_move player move = 
-	match move with
-	| Shift (card,deck1,deck2) -> if size deck1 != 0 then 
-								  shift_helper player card deck1 deck2
-							      else ()
-	| Flip -> flip player
-	| Declare -> ()
-
+end
