@@ -82,7 +82,7 @@ let deck =
 {rank= Ace;suit=Spades}]
 
 
-(* Taken from internet need to creat own. *)
+(* Shuffles a deck [d]*)
 let shuffle d =
     let a = List.map (fun c -> (Random.bits (), c)) d in 
     let temp = List.sort compare a in 
@@ -105,6 +105,7 @@ let isEmpty  deck =
 	then true 
  	else false
 
+(*Coverts cards to rank int for calculation *)
 let rank_convert rank = 
 	match  rank with
 	| Number x -> x
@@ -113,12 +114,14 @@ let rank_convert rank =
 	| King -> 13
 	| Ace  -> 14
 	
+(* Determienes suit for solitare calculation. True for Hearts/Diamonds. *)
 let is_red suit = 
 	match suit with
-	| Hearts | Diamonds -> false
-	| _ -> true
+	| Hearts | Diamonds -> true
+	| _ -> false
 
 
+(* Determines if one can add a single card [card] to a wrokspace pile deck*)
 let can_add_card deck card = 
 	if isEmpty deck 
 	then true 
@@ -130,6 +133,7 @@ let can_add_card deck card =
 	else 
 	false
 
+(* Determines if one can add a card to the common area pile  *)
 let can_add_card_common deck card = 
 	if size deck = 13
 	then false 
@@ -143,34 +147,36 @@ let can_add_card_common deck card =
 	false
 
 (*
-Tranpoting multpile decks 
-*)
+Tranpoting multpile decks *)
 let can_add_deck deck_from deck_to = 
 	let lower = List.nth deck_from  ((size deck_from)-1) in 
 	can_add_card deck_to lower
 
+(* returns first part of list up to index num *)
 let rec split_list list2 num = 
 	match list2 with
 	| h::t -> if num == 1 then [h] else h::(split_list t (num-1))
 	| [] -> []
 
+(* returns secound half of list after num index *)
 let rec split_list2 list num = 
 	match list with
 	| [] -> []
 	| h::t -> if num > 0 then split_list2 (List.tl list) (num-1) else list
 	
-
+(* makes 4 lists that represent the workpile at the start of the game *)
 let rec make_work (work_pile : deck) = 
 	match work_pile with
 	| h::t -> [h]::(make_work t)
 	| [] -> []
 
+(* adds a card to a pile if legal *)
 let addCard_work deck card = 
 	if can_add_card deck card then 
 	[card]@deck
 	else
 	deck
-
+(* removes a card from a pile*)
 let removeCard (deck : deck) card = 
 	if size deck = 0 then 
 	deck
@@ -180,6 +186,7 @@ let removeCard (deck : deck) card =
  	else 
  	List.tl deck
 
+(* combines too decks if legal *)
 let combine (deck_from : deck)  deck_to = 
 	if size deck_from = 0 then deck_to else
 	if size deck_to = 0 then deck_from else
@@ -193,11 +200,12 @@ let rec separate_helper (deck : deck) card =
 				h::(separate_helper t card) 
 	| [] -> []
 
+(* seprates two decks and returns top of new deck *)
 let separate deck card = 
 	if List.mem card deck = false then deck else
 	separate_helper deck card
 
-
+(* removes first element from a list if legal *)
 let remove_first deck =
 	if size deck > 0 then  List.tl deck else deck
 (*)
