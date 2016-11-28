@@ -159,18 +159,18 @@ let shift_helper player card deck1 deck2 =
 
 let shift_helper_common player card deck1 deck2 = 
 	if deck1 = player.workspace1 then 
-					    let () = player.workspace1 <- List.tl player.workspace1 in 
+					     player.workspace1 <- List.tl player.workspace1 
 	else if deck1 = player.workspace2 then 
-					    let () = player.workspace2 <- List.tl player.workspace2 in 
+					    player.workspace2 <- List.tl player.workspace2 
 	else if deck1 = player.workspace3 then 
-					    let () = player.workspace3 <- List.tl player.workspace3 in 
+					    player.workspace3 <- List.tl player.workspace3  
 	else if deck1 = player.workspace4 then 
-					    let () = player.workspace4 <- List.tl player.workspace4 in 
+					     player.workspace4 <- List.tl player.workspace4 
 	else if deck1 = player.wastePile then 
-					    let () = player.wastePile <- List.tl player.wastePile in 
+					     player.wastePile <- List.tl player.wastePile 
 	else if deck1 = player.nerts then 
 					    let () = player.nerts <- List.tl player.nerts in 
-					    let () = player.points <- (player.points + 2) in 
+					    player.points <- (player.points + 2) 
 	else () 
 
 end

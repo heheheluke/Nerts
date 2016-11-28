@@ -36,16 +36,24 @@ let perform_move  move =
 	| Shift (card,deck1,deck2,player) -> 
 	| _ -> ()
 *)
+let rec common_area_adder (commonArea : orderedDeck list) card deck_to = 
+	match commonArea with
+	| h::t -> if h = deck_to then [([card]@deck_to)]@t else h::(common_area_adder t card deck_to)
+	| [] -> []
 
 let shift_common_helper state deck_from deck_to player = 
 	if size deck_from = 0 then () 
 	else 
 	let card = List.hd deck_from in 
 	if can_add_card_common card deck_to then 
-	let () = shift_helper_common player deck_from in 
-	
+	let () = shift_helper_common player deck_from  deck_to player in 
+	let common = common_area_adder state.commonArea card deck_to in 
+	let () = state.commonArea <- common in 
+	player.points <- (player.points + 1)
 	else ()
 
+
+	
 let move state move = 
 	match move with
 	| Shift_Common (deck_from,deck_to,player) -> let () = shift_common_helper state deck_from deck_to player in 
