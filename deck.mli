@@ -19,6 +19,7 @@ type card = {rank : rank;
 cards are ordered.*)
 type deck = card list
 
+
 (*Represents a deck of cards that would form the common area of the
 Nerts game. An ordered deck is a deck where the ranks of the cards are
 increasing from the bottom to the top, and the suit of all the cards
