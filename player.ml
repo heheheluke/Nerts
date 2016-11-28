@@ -6,14 +6,7 @@ actions a player can perform*)
 
 (*TYPE DEFINITIONS*)
 
-(*Variant type that represents a possible move a player can perform. The player
-can shift a card from one deck to another, flip the stock pile into the waste pile,
-and declare Nerts. *)
-type move = 
-		| Shift_Common of deck 
-		| Shift of card * deck * deck 
-		| Flip 
-		| Declare
+
 
 (*Represents a player's input as a string (e.g. "move King of Hearts from workspace deck
 1 to common area"*)
@@ -46,6 +39,16 @@ type player = {name : string;
 			mutable nerts : nerts; 
 			mutable wastePile : wastePile; 
 			mutable stockPile : stockPile}
+
+(*Variant type that represents a possible move a player can perform. The player
+can shift a card from one deck to another, flip the stock pile into the waste pile,
+and declare Nerts. *)
+type move = 
+		| Shift_Common of deck * deck * player
+		| Shift of card * deck * deck * player
+		| Flip of player
+		| Shuffle 
+		| Declare
 		
 let init name = 
 	let s = shuffle deck in 
@@ -146,6 +149,7 @@ let shift_helper player card deck1 deck2 =
 					    let () = player.nerts <- List.tl player.nerts in 
 					    let () = player.points <- (player.points + 2) in 
 					    add_card_heleper player card deck2
+					 else ()
 					   (*
 					else if (List.nth deck1 ((size deck1)-1) = card && can_add_card deck2 card then 
 						let () = player.nerts_pile <- List.tl player.nerts_pile in 
@@ -153,5 +157,20 @@ let shift_helper player card deck1 deck2 =
 					*)
 	else () 
 
+let shift_helper_common player card deck1 deck2 = 
+	if deck1 = player.workspace1 then 
+					    let () = player.workspace1 <- List.tl player.workspace1 in 
+	else if deck1 = player.workspace2 then 
+					    let () = player.workspace2 <- List.tl player.workspace2 in 
+	else if deck1 = player.workspace3 then 
+					    let () = player.workspace3 <- List.tl player.workspace3 in 
+	else if deck1 = player.workspace4 then 
+					    let () = player.workspace4 <- List.tl player.workspace4 in 
+	else if deck1 = player.wastePile then 
+					    let () = player.wastePile <- List.tl player.wastePile in 
+	else if deck1 = player.nerts then 
+					    let () = player.nerts <- List.tl player.nerts in 
+					    let () = player.points <- (player.points + 2) in 
+	else () 
 
 end

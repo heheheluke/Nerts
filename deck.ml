@@ -17,7 +17,7 @@ type deck = card list
 Nerts game. An ordered deck is a deck where the ranks of the cards are
 increasing from the bottom to the top, and the suit of all the cards
 are the same. *)
-type orderedDeck = deck * suit
+type orderedDeck = deck 
 
 (*Represents a deck of cards that would compose the workspace of a
 player. A solitaire deck is a deck where the ranks of the cards decrease
@@ -134,14 +134,13 @@ let can_add_card deck card =
 	false
 
 (* Determines if one can add a card to the common area pile  *)
-let can_add_card_common deck card = 
+let can_add_card_common card deck = 
 	if size deck = 13
 	then false 
-	else if (card.rank = Ace) && isEmpty deck then 
-	true
+	else if (card.rank = Ace) && size deck = 0 then true
 	else 
 	let dcard = List.hd deck in 
-	if ((rank_convert dcard.rank) = ((rank_convert card.rank)-11)) &&
+	if ((rank_convert dcard.rank) = ((rank_convert card.rank)-1)) &&
 	dcard.suit = card.suit then true
 	else
 	false
@@ -208,7 +207,7 @@ let separate deck card =
 (* removes first element from a list if legal *)
 let remove_first deck =
 	if size deck > 0 then  List.tl deck else deck
-(*)
+(*
 (*Given two decks a and b, combines the decks so that a goes on top of b,
 and gives the newly formed deck. 
 For example, if a was the deck: King of Hearts, Queen of Hearts, Jack of Hearts,
