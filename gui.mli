@@ -1,4 +1,4 @@
-open engine
+open State
 
 (******************************************************************************)
 (** Nertz GUI Interface                                                      **)
@@ -11,7 +11,7 @@ open engine
 (* Given an input of the game state, displays a graphic window containing all
    information relevant to the current Nertz game.
  *)
-val initGui       : state -> unit
+val initGui       : e -> unit
 
 (* Given an input of the game state, updates the GUI to display relevant
    information to the game. Should be called after calling <performMove> in
